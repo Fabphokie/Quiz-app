@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Quiz App</title>
+    <style>
+        /* CSS styles for the quiz app */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        #question {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .options {
+            margin-bottom: 20px;
+        }
+        .option {
+            display: block;
+            margin-bottom: 10px;
+        }
+        #result {
+            text-align: center;
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Simple Quiz App</h1>
+    <div id="question"></div>
+    <div class="options" id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    // Quiz data
+    const quizData = [
+        {
+            question: "What is the capital of France?",
+            options: ["Paris", "London", "Berlin", "Rome"],
+            answer: "Paris"
+        },
+        {
+            question: "Who wrote 'Romeo and Juliet'?",
+            options: ["William Shakespeare", "Charles Dickens", "Jane Austen", "Leo Tolstoy"],
+            answer: "William Shakespeare"
+        },
+        {
+            question: "What is the chemical symbol for water?",
+            options: ["H2O", "CO2", "NaCl", "CH4"],
+            answer: "H2O"
+        }
+    ];
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    // Function to load next question
+    function nextQuestion() {
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const resultElement = document.getElementById('result');
+
+        if (currentQuestionIndex < quizData.length) {
+            questionElement.textContent = quizData[currentQuestionIndex].question;
+            optionsElement.innerHTML = '';
+
+            quizData[currentQuestionIndex].options.forEach((option, index) => {
+                const optionElement = document.createElement('input');
+                optionElement.type = 'radio';
+                optionElement.name = 'option';
+                optionElement.value = option;
+                optionElement.id = `option${index}`;
+                const labelElement = document.createElement('label');
+                labelElement.textContent = option;
+                labelElement.setAttribute('for', `option${index}`);
+                optionsElement.appendChild(optionElement);
+                optionsElement.appendChild(labelElement);
+                optionsElement.appendChild(document.createElement('br'));
+            });
+        }
+
+        if (currentQuestionIndex === quizData.length) {
+            resultElement.textContent = `Your score: ${score}/${quizData.length}`;
+        }
+
+        currentQuestionIndex++;
+    }
+
+    // Function to check answer
+    function checkAnswer() {
+        const selectedOption = document.querySelector('input[name="option"]:checked');
+        if (selectedOption) {
+            if (selectedOption.value === quizData[currentQuestionIndex - 1].answer) {
+                score++;
+            }
+        }
+    }
+
+    // Load first question initially
+    nextQuestion();
+</script>
+
+</body>
+</html>
